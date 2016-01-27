@@ -12,7 +12,7 @@ issues you ran into.
 # Usage
 
 ```python
-from nameko.rpc import rpc, RpcProxy
+from nameko.rpc import rpc
 from pydal_extension import DalProvider
 from pydal import Field
 from datetime import datetime 
@@ -21,7 +21,7 @@ from datetime import datetime
 def define_model(db):
     db.define_table('something',
                     Field('foo'),
-                    Field('ts','string',length=26+6,default=datetime.now().isoformat()) # store timestamps as strings
+                    Field('ts','string',default=datetime.now().isoformat()) # store timestamps as strings
     )
 
 class pydaltest(object):
@@ -34,7 +34,7 @@ class pydaltest(object):
         self.db.something.insert(foo=value)
 
     @rpc
-    def get_all(self):
+    def get_cnt_and_newest_record(self):
         db, id = self.db, self.db.something.id
         sub_select = db(id > 0)._select(id.max())
         cnt = db(id > 0).count()

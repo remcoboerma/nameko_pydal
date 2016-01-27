@@ -72,3 +72,9 @@ database_uris:
         db_codec : UTF-8
         migrate : true
 ```
+
+# A note on datetime fields
+It's easy with pydal to use datetime fields. But if you want to return a record from one service to another beware 
+of nameko's default encoding of json. It will not accept datetime types. Either choose a different messaging format
+, pickle is an option though i haven't tried it yet, or convert the datetimes to a string. You can apply this to your 
+model, but of course you needn't and just convert the values at the right time, just before returning. 

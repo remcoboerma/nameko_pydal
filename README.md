@@ -18,7 +18,7 @@ from pydal import Field
 from datetime import datetime 
 
 
-def define_model(db):
+def define_model(db,other_args):
     db.define_table('something',
                     Field('foo'),
                     Field('ts','string',default=datetime.now().isoformat()) # store timestamps as strings
@@ -55,7 +55,7 @@ The `DalProvider` knows to which service it is bound. It will use the `.name` of
 and `kwargs` applied to the `DAL` constructor from the configuration. Here is an example for a simple sqlite dabase 
 with some keyword parameters set to the default values, purely for illustrative purposes. You see `database_uris` as 
 the root of this configuration. It is a dictionary with the service name as a key and a dictionary as value. This latter
-dictionary contains two keys: `args` and `kwargs` . Both are applied to the `DAL` constructor like `DAL(*args,**kwargs)`. 
+dictionary contains trhe keys: `args`, `kwargs` and `other_args`. The first two are applied to the `DAL` constructor like `DAL(*args,**kwargs)`. The latter is available to send microservice specific parameters to the define_model function. 
 Thus you have all freedom to setup the connection parameters as required. 
 (Probably this is useful if you use a larger number of workers, otherwise they will be waiting for a 
 new connection from the pool.) 
@@ -71,6 +71,8 @@ database_uris:
       kwargs:
         db_codec : UTF-8
         migrate : true
+      other_args:
+      
 ```
 
 # A note on datetime fields
